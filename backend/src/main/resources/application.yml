@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url:jbdc:postgresql://localhost:5432/tododb
+    username: todouser
+    password: todopass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hiberante.dialect.PostgrSQLDialect
+      format_sql: true
+    show-sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: mySecretKeyForJWTGenerationThatIsAtLeast256BitsLong
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    com.todoapp: DEBUG
+    org.springframework.security: DEBUG
+
+
+app:
+  jwt:
+    secret: mySecretKeyForJWTGenerationThatIsAtLeast256BitsLong
+    expiration: 86400000 # 24 hours in milliseconds
