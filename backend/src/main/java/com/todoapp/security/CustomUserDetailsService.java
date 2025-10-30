@@ -1,6 +1,7 @@
 package com.todoapp.security;
 
 import com.todoapp.entity.User;
+import com.todoapp.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
