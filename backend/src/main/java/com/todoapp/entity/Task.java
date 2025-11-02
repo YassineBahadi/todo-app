@@ -44,6 +44,13 @@ public class Task {
     @JoinColumn(name="user_id")
     private User user;
 
+    public Task(String title, String description, Priority priority, Status status, User user) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = status;
+        this.user = user;
+    }
 
     public enum Priority {
         LOW, MEDIUM, HIGH
