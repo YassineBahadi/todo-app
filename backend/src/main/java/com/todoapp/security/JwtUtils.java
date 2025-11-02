@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.file.attribute.UserPrincipal;
 import java.util.Date;
 
 /**
@@ -33,7 +32,7 @@ public class JwtUtils {
         UserPrincipal  userPrincipal=(UserPrincipal) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getName()))
+                .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime()+jwtExpirationMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
