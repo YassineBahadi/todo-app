@@ -16,7 +16,7 @@ import java.util.Map;
  * @author pc
  **/
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @CrossOrigin(origins="*",maxAge=3600)
 public class AuthController {
     private final AuthService authService;

@@ -16,6 +16,8 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI todoOpenAPI() {
+        final String securitySchemeName = "bearerAuth"; // Nom simple et sans espace
+
         return new OpenAPI()
                 .info(new Info()
                         .title("Todo Task Manager API")
@@ -26,14 +28,15 @@ public class OpenApiConfig {
                                 .email("yassinebahadi04@gmail.com")
                         )
                 )
-                .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
+                // Ajout de la sécurité globalement pour toutes les routes
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes("Bearer Authentication",
+                        .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
+                                        .scheme("bearer")
                                         .bearerFormat("JWT")
-                                        ));
-
+                        )
+                );
     }
 }

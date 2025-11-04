@@ -15,7 +15,7 @@ import java.util.List;
  * @author pc
  **/
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/tasks")
 @CrossOrigin(origins="*",maxAge = 3600)
 public class TaskController {
     private final TaskService taskService;
