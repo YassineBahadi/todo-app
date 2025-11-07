@@ -1,0 +1,149 @@
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: tododb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven'
+        
+    - name: Build and test backend
+      run: |
+        cd backend
+        mvn clean package
+        
+    - name: Run backend tests
+      run: |
+        cd backend
+        mvn test
+
+  frontend-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/todo-frontend/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd frontend/todo-frontend
+        npm ci
+        
+    - name: Build frontend
+      run: |
+        cd frontend/todo-frontend
+        npm run build
+        
+    - name: Run unit tests
+      run: |
+        cd frontend/todo-frontend
+        npm test -- --watch=false --browsers=ChromeHeadless
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test]
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: tododb
+          POSTGRES_USER: todouser
+          POSTGRES_PASSWORD: todopass
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        cd frontend/todo-frontend
+        npm ci
+        
+    - name: Build frontend
+      run: |
+        cd frontend/todo-frontend
+        npm run build
+        
+    - name: Start backend
+      run: |
+        cd backend
+        mvn spring-boot:run &
+        
+    - name: Start frontend
+      run: |
+        cd frontend/todo-frontend
+        npm start &
+        
+    - name: Wait for apps to start
+      run: |
+        npx wait-on http://localhost:4200 http://localhost:8080/api/auth/check
+        sleep 10
+        
+    - name: Run E2E tests
+      run: |
+        cd frontend/todo-frontend
+        npm run e2e
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test, e2e-tests]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build and push Docker images
+      run: |
+        docker build -t todo-backend ./backend
+        docker build -t todo-frontend ./frontend/todo-frontend
+        
+    - name: Deploy to production
+      run: |
+        echo "Deployment would happen here"
+        # This would deploy to Railway/Render/Fly.io
