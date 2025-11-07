@@ -22,7 +22,7 @@ export class TaskService {
     return this.http.get<Task>(`${this.apiUrl}/tasks/${id}`);
   }
 
-  createTask(task:Task):Observable<Task>{
+  createTask(task:TaskForm):Observable<Task>{
     return this.http.post<Task>(`${this.apiUrl}/tasks`,task);
   }
 

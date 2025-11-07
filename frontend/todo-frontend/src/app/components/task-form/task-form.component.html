@@ -1,1 +1,79 @@
-<p>task-form works!</p>
+  <div class="task-form-container">
+      <h2 mat-dialog-title>
+        <mat-icon class="header-icon">{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+        {{ isEditMode ? 'Modifier la tâche' : 'Nouvelle tâche' }}
+      </h2>
+
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Titre</mat-label>
+          <input matInput formControlName="title" placeholder="Entrez le titre de la tâche" required>
+          <mat-error *ngIf="taskForm.get('title')?.hasError('required')">
+            Le titre est requis
+          </mat-error>
+          <mat-error *ngIf="taskForm.get('title')?.hasError('maxlength')">
+            Le titre ne peut pas dépasser 100 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea 
+            matInput 
+            formControlName="description" 
+            placeholder="Décrivez la tâche (optionnel)"
+            rows="4"
+          ></textarea>
+          <mat-error *ngIf="taskForm.get('description')?.hasError('maxlength')">
+            La description ne peut pas dépasser 500 caractères
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Priorité</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option [value]="Priority.LOW">
+                <span class="priority-option low">Basse</span>
+              </mat-option>
+              <mat-option [value]="Priority.MEDIUM">
+                <span class="priority-option medium">Moyenne</span>
+              </mat-option>
+              <mat-option [value]="Priority.HIGH">
+                <span class="priority-option high">Haute</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="status">
+              <mat-option [value]="Status.PENDING">En attente</mat-option>
+              <mat-option [value]="Status.IN_PROGRESS">En cours</mat-option>
+              <mat-option [value]="Status.COMPLETED">Terminée</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            mat-button 
+            type="button" 
+            (click)="onCancel.emit()"
+            class="cancel-button"
+          >
+            Annuler
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="!taskForm.valid"
+            class="submit-button"
+          >
+            <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+            {{ isEditMode ? 'Sauvegarder' : 'Créer' }}
+          </button>
+        </div>
+      </form>
+    </div>

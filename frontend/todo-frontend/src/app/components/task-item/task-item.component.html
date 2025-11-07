@@ -1,1 +1,57 @@
-<p>task-item works!</p>
+   <mat-card class="task-card" [class.completed]="task.status === 'COMPLETED'">
+      <mat-card-content>
+        <div class="task-header">
+          <h3 class="task-title" [class.completed]="task.status === 'COMPLETED'">
+            {{ task.title }}
+          </h3>
+          
+          <button mat-icon-button [matMenuTriggerFor]="taskMenu" class="menu-button">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          
+          <mat-menu #taskMenu="matMenu">
+            <button mat-menu-item (click)="onEdit.emit(task)">
+              <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
+            </button>
+            <button mat-menu-item (click)="onDelete.emit(task.id)" class="delete-button">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
+        </div>
+
+        <p class="task-description" *ngIf="task.description">
+          {{ task.description }}
+        </p>
+
+        <div class="task-meta">
+          <mat-chip-set>
+            <mat-chip 
+              [class]="getPriorityClass(task.priority)" 
+              [disabled]="true"
+            >
+              <mat-icon class="chip-icon">flag</mat-icon>
+              {{ getPriorityLabel(task.priority) }}
+            </mat-chip>
+            
+            <mat-chip 
+              [class]="getStatusClass(task.status)" 
+              [disabled]="true"
+            >
+              <mat-icon class="chip-icon">{{ getStatusIcon(task.status) }}</mat-icon>
+              {{ getStatusLabel(task.status) }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <div class="task-dates">
+          <small class="date-text">
+            Créé le: {{ task.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </small>
+          <small class="date-text" *ngIf="task.updatedAt !== task.createdAt">
+            Modifié le: {{ task.updatedAt | date:'dd/MM/yyyy HH:mm' }}
+          </small>
+        </div>
+      </mat-card-content>
+    </mat-card>

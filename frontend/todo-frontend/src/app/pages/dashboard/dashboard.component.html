@@ -1,1 +1,135 @@
-<p>dashboard works!</p>
+ <div class="dashboard-container">
+      <!-- Header -->
+      <div class="dashboard-header">
+        <div class="header-content">
+          <h1 class="page-title">
+            <mat-icon class="title-icon">dashboard</mat-icon>
+            Tableau de bord
+          </h1>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="openTaskForm()"
+            class="add-task-button"
+          >
+            <mat-icon>add</mat-icon>
+            Nouvelle tâche
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-section">
+        <div class="search-filter">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Rechercher une tâche</mat-label>
+            <input 
+              matInput 
+              placeholder="Titre ou description..." 
+              [(ngModel)]="filters.search"
+              (ngModelChange)="onFiltersChange()"
+            >
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="filter-controls">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Statut</mat-label>
+            <mat-select 
+              [(ngModel)]="filters.status" 
+              (selectionChange)="onFiltersChange()"
+            >
+              <mat-option [value]="null">Tous les statuts</mat-option>
+              <mat-option [value]="Status.PENDING">En attente</mat-option>
+              <mat-option [value]="Status.IN_PROGRESS">En cours</mat-option>
+              <mat-option [value]="Status.COMPLETED">Terminée</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Priorité</mat-label>
+            <mat-select 
+              [(ngModel)]="filters.priority" 
+              (selectionChange)="onFiltersChange()"
+            >
+              <mat-option [value]="null">Toutes les priorités</mat-option>
+              <mat-option [value]="Priority.LOW">Basse</mat-option>
+              <mat-option [value]="Priority.MEDIUM">Moyenne</mat-option>
+              <mat-option [value]="Priority.HIGH">Haute</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button 
+            mat-stroked-button 
+            (click)="clearFilters()"
+            class="clear-filters-button"
+          >
+            <mat-icon>clear</mat-icon>
+            Effacer
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-section" *ngIf="!isLoading">
+        <div class="stat-card">
+          <div class="stat-icon total">
+            <mat-icon>assignment</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ totalTasks }}</div>
+            <div class="stat-label">Total</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon pending">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ pendingTasks }}</div>
+            <div class="stat-label">En attente</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon in-progress">
+            <mat-icon>play_arrow</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ inProgressTasks }}</div>
+            <div class="stat-label">En cours</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon completed">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number">{{ completedTasks }}</div>
+            <div class="stat-label">Terminées</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task List -->
+      <app-task-list
+        [tasks]="filteredTasks"
+        [isLoading]="isLoading"
+        [searchTerm]="filters.search"
+        (onEdit)="editTask($event)"
+        (onDelete)="deleteTask($event)"
+      ></app-task-list>
+    </div>
+
+    <!-- Task Form Dialog -->
+    <ng-template #taskFormDialog>
+      <app-task-form
+        [task]="selectedTask"
+        [dialogRef]="taskDialogRef"
+        (onSave)="saveTask($event)"
+        (onCancel)="closeTaskForm()"
+      ></app-task-form>
+    </ng-template>

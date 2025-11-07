@@ -1,1 +1,22 @@
-<p>task-list works!</p>
+  <div class="task-list-container">
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Chargement des tâches...</p>
+      </div>
+
+      <div *ngIf="!isLoading && tasks.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">assignment</mat-icon>
+        <h3>Aucune tâche trouvée</h3>
+        <p *ngIf="!searchTerm">Commencez par créer votre première tâche !</p>
+        <p *ngIf="searchTerm">Aucune tâche ne correspond à votre recherche.</p>
+      </div>
+
+      <div *ngIf="!isLoading && tasks.length > 0" class="tasks-grid">
+        <app-task-item
+          *ngFor="let task of tasks"
+          [task]="task"
+          (onEdit)="onEdit.emit($event)"
+          (onDelete)="onDelete.emit($event)"
+        ></app-task-item>
+      </div>
+    </div>
