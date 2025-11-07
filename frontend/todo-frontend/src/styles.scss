@@ -1,6 +1,54 @@
 // src/styles.scss
 @use '@angular/material' as mat;
 
+
+// dark-theme
+.dark-theme {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-card: #363636;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+
+  .mat-app-background {
+    background-color: var(--bg-primary);
+  }
+
+  .task-card {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+  }
+
+  .filters-section,
+  .stat-card {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+  }
+
+  .mat-form-field {
+    .mat-form-field-outline {
+      color: var(--border-color);
+    }
+
+    .mat-input-element {
+      color: var(--text-primary);
+    }
+
+    .mat-form-field-label {
+      color: var(--text-secondary);
+    }
+  }
+
+  .empty-state {
+    color: var(--text-secondary);
+  }
+}
+
+
 html, body { 
   height: 100%; 
   margin: 0; 
@@ -50,48 +98,3 @@ html, body {
 
 
 
-// dark-theme
-.dark-theme {
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-card: #363636;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --border-color: #404040;
-
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-
-  .mat-app-background {
-    background-color: var(--bg-primary);
-  }
-
-  .task-card {
-    background-color: var(--bg-card);
-    color: var(--text-primary);
-  }
-
-  .filters-section,
-  .stat-card {
-    background-color: var(--bg-card);
-    color: var(--text-primary);
-  }
-
-  .mat-form-field {
-    .mat-form-field-outline {
-      color: var(--border-color);
-    }
-
-    .mat-input-element {
-      color: var(--text-primary);
-    }
-
-    .mat-form-field-label {
-      color: var(--text-secondary);
-    }
-  }
-
-  .empty-state {
-    color: var(--text-secondary);
-  }
-}
