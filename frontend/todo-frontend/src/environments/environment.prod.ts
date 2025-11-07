@@ -1,4 +1,5 @@
+// src/environments/environment.prod.ts
 export const environment = {
   production: true,
-  apiUrl: '/api'
+  apiUrl: 'https://todo-backend-production.up.railway.app/api'
 };

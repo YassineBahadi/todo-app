@@ -1,0 +1,9 @@
+{
+  "apiUrl": "https://todo-backend-production.up.railway.app/api",
+  "version": "1.0.0",
+  "features": {
+    "darkMode": true,
+    "offlineMode": true,
+    "notifications": true
+  }
+}

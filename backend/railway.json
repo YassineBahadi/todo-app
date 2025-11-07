@@ -1,0 +1,9 @@
+{
+"build": {
+"builder": "heroku/buildpacks:20"
+},
+"deploy": {
+"startCommand": "java -jar target/*.jar",
+"restartPolicyType": "ON_FAILURE"
+}
+}

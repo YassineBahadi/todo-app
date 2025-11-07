@@ -18,6 +18,9 @@
               <span>Déconnexion</span>
             </button>
           </mat-menu>
+          <button mat-icon-button (click)="toggleTheme()" class="theme-toggle">
+  <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</button>
         </div>
       </div>
     </mat-toolbar>
