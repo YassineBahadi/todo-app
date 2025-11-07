@@ -1,0 +1,35 @@
+ .header-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .toolbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-icon {
+      margin-right: 8px;
+    }
+    .brand-text {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+    .user-section {
+      display: flex;
+      align-items: center;
+    }
+    .user-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .username {
+      margin: 0 4px;
+    }
